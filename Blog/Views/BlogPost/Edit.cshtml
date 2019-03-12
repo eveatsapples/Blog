@@ -1,0 +1,41 @@
+﻿
+@model EditPostViewModel
+@{
+    ViewBag.Title = "Edit";
+}
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script src="~/Scripts/tinymce/tinymce.min.js"></script>
+    <script src="~/Scripts/tinymce/jquery.tinymce.min.js"></script>
+    <script type="text/javascript">
+  $(function () {
+    tinymce.init({
+      selector: '#editor'
+    });
+  });
+    </script>
+}
+<h2>Edit</h2>
+<form method="post" enctype="multipart/form-data">
+    @Html.ValidationSummary(false)
+    <div class="form-group">
+        @Html.LabelFor(p => p.Title, "Title:")
+        @Html.TextBoxFor(p => p.Title, new { @class = "form-control", placeholder = "Headline" })
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(p => p.Body, "Body:")
+        @Html.TextAreaFor(p => p.Body, new { @id = "editor", @class = "form-control", placeholder = "Body", rows = 5, columns = 5 })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(p => p.Media, "Picture:")
+        <input type="file" name="Media" />
+    </div>
+
+    <div class="">
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </div>
+</form>
+
+

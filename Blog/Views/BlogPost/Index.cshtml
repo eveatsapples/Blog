@@ -1,0 +1,84 @@
+﻿@model List<IndexBlogPostViewModel>
+
+@{
+ViewBag.Title = "Blog";
+}
+
+@section scripts {
+    <script src="~/Scripts/indexmovie.js" type="text/javascript"></script>
+}
+<!-- section -->
+<div class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-8">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-title">
+                            <h2>Blog</h2>
+                        </div>
+                    </div>
+                    @if (User.IsInRole("Admin"))
+          {
+                    <a class="btn btn-primary" href="@Url.Action("NewPost", "BlogPost")">Post a new Post</a>
+                    <hr />
+          }
+                    @if (!Model.Any())
+          {
+                    <div style="margin-top:15px;">
+                        <p><strong>You have no Posts</strong></p>
+                    </div>
+          }
+          else
+          {
+            foreach (var record in Model)
+            {
+ <!-- post -->
+                    <div class="col-md-12">
+                        <div class="post post-row">
+                            @if (record.MediaUrl != null)
+                            {
+                                <a class="post-img" href="@Url.Action("FullArticle", "BlogPost", new { id = record.Id })"><img src="@Url.Content(record.MediaUrl)" alt=""></a>
+                            }
+                            <div class="post-body">
+                                <div class="post-meta">
+                                    @if (record.Date_updated != null && record.Date_updated.Count() > 0)
+                                    {
+                                        <span class="post-date">@record.Date_updated</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="post-date">@record.Date_created</span>
+                                    }
+                                </div>
+                                <h3 class="post-title"><a href="@Url.Action("FullArticle", "BlogPost", new { id = record.Id })">@record.Title</a></h3>
+                                @if (record.Body.Count() > 50)
+                                {
+                                    <p>@Html.Raw(record.Body.Substring(0, 24))...</p>
+                                }
+                                else
+                                {
+                                    <p>@Html.Raw(record.Body)</p>
+                                }
+                            </div>
+                            @if (User.IsInRole("Admin"))
+                            {
+                                <form method="get" action="@Url.Action("Edit", "BlogPost", new { id = record.Id })" class="edit-delete-btns-forms">
+                                    <button class="btn btn-primary" type="submit">Edit</button>
+                                </form>
+                                <form method="post" action="@Url.Action("Delete", "BlogPost", new { id = record.Id })" class="edit-delete-btns-forms">
+                                    <button class="btn btn-primary" type="submit">Delete</button>
+                                </form>
+                            }
+                        </div>
+                    </div>
+
+            }
+          }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

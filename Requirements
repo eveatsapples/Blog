@@ -1,0 +1,31 @@
+
+Requirements
+
+$ Use an appropriate Bootstrap template for a professional appearance
+$ Make sure you validate all user inputs.
+$ Post Class modeled with the following fields (Make sure you include fields required by EntityFramework)
+  $ Title
+  $ Body
+  $ Published (Boolean)
+  $ Date created
+  $ Date updated
+  $ User
+
+$ Working pages/functionality
+  $ Create/Edit Posts – Page to input information
+  to create or edit posts. TinyMCE and File upload must be included in the
+  page.
+  $ List Posts – Page to list all posts. This page can display additionally
+  functionality/buttons based on user role. This page will not display the full
+  details of the post.
+  $ Delete Posts – Page or button to delete posts 
+  $ View Post – Page used to display the full details of the post
+
+$ Security
+  $ Database Seeded
+  Login for Admin Role- Username: admin@blog.com- Password: Password-1
+  $ Database
+  Seeded Login for Moderator role- Username: moderator@blog.com- Password:
+  Password-1
+  $ Admin authorization required for blog post maintenance
+  (Create/Edit/Delete)

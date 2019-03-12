@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - My ASP.NET Application</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css?family=Nunito+Sans:700%7CNunito:300,600" rel="stylesheet">
+
+    <!-- Bootstrap -->
+    @Scripts.Render("~/css/bootstrap.min.css")
+
+    <!-- Font Awesome Icon -->
+    @Scripts.Render("~/css/font-awesome.min.css")
+
+    <!-- Custom stlylesheet -->
+    @Styles.Render("~/css/style.css")
+
+
+</head>
+<body>
+    <!-- Header -->
+    <header id="header">
+        <!-- Nav -->
+        <div id="nav">
+            <!-- Main Nav -->
+            <div id="nav-fixed">
+                <div class="container">
+                    <!-- logo -->
+                    <div class="nav-logo">
+                        <a href='@Url.Action("Index", "Home")' class="logo">
+                            <img src='@Url.Content("~/img/logo.png")' alt="logo" />
+                        </a>
+                    </div>
+                    <!-- /logo -->
+                    <!-- nav -->
+                    <ul class="nav-menu nav navbar-nav">
+                        <li class="cat-1">@Html.ActionLink("Home", "Index", "Home")</li>
+                        <li class="cat-2">@Html.ActionLink("Blog", "Index", "BlogPost")</li>
+                        <li class="cat-3">@Html.ActionLink("Post", "NewPost", "BlogPost")</li>
+                        <li class="cat-4">@Html.Partial("_LoginPartial")</li>
+                    </ul>
+                    <!-- /nav -->
+                </div>
+            </div>
+            <!-- /Main Nav -->
+
+        </div>
+        <!-- /Nav -->
+    </header>
+    <!-- /Header -->
+
+
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+
+        <!-- Footer -->
+        <footer id="footer">
+            <!-- container -->
+            <div class="container">
+                <!-- row -->
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="footer-widget">
+                            <div class="footer-logo">
+                                <a href="index.html" class="logo"><img src="~/img/logo.png" alt=""></a>
+                            </div>
+                            <ul class="footer-nav">
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="#">Advertisement</a></li>
+                            </ul>
+                            <div class="footer-copyright">
+                                <span>
+                                    &copy; <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                    Copyright &copy;
+                                    <script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+                                    <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="footer-widget">
+                                    <h3 class="footer-title">Go To</h3>
+                                    <ul class="footer-links">
+                                        <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                                        <li>@Html.ActionLink("About", "About", "Home")</li>
+                                        <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="footer-widget">
+                            <h3 class="footer-title">Join our Newsletter</h3>
+                            <div class="footer-newsletter">
+                                <form>
+                                    <input class="input" type="email" name="newsletter" placeholder="Enter your email">
+                                    <button class="btn btn-primary" type="submit">Join</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /row -->
+            </div>
+            <!-- /container -->
+        </footer>
+        <!-- /Footer -->
+
+
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <!-- jQuery Plugins -->
+    @Scripts.Render("~/js/main.js")
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
