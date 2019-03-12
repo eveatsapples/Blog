@@ -22,8 +22,6 @@ namespace Blog.Controllers
             DbContext = new ApplicationDbContext();
         }
 
-
-        // GET: BlogPost
         public ActionResult Index()
         {
             var model = DbContext.BlogPosts
@@ -39,7 +37,6 @@ namespace Blog.Controllers
 
             return View(model);
         }
-
 
         [HttpGet]
         [Authorize(Roles = "Admin")]
@@ -61,7 +58,6 @@ namespace Blog.Controllers
         {
             if (!ModelState.IsValid)
             {
-                //PopulateViewBag();
                 return View();
             }
 
@@ -74,12 +70,10 @@ namespace Blog.Controllers
                 ModelState.AddModelError(nameof(EditPostViewModel.Title),
                     "Article title should be unique");
 
-                //PopulateViewBag();
                 return View();
             }
             string fileExtension;
 
-            //Validating file upload
             if (formData.Media != null)
             {
                 fileExtension = Path.GetExtension(formData.Media.FileName);
@@ -115,7 +109,6 @@ namespace Blog.Controllers
             post.Date_created = DateTime.Now;
             post.Published = true;
 
-            //Handling file upload
             if (formData.Media != null)
             {
                 if (!Directory.Exists(Constants.MappedUploadFolder))
@@ -155,8 +148,6 @@ namespace Blog.Controllers
             {
                 return RedirectToAction(nameof(BlogPostController.Index));
             }
-
-            //PopulateViewBag();
 
             var model = new EditPostViewModel();
             model.Title = post.Title;
@@ -216,21 +207,5 @@ namespace Blog.Controllers
 
             return View(model);
         }
-
-        //  private void PopulateViewBag()
-        //  {
-        //    var categories = new SelectList(
-        //        new List<string>
-        //        {
-        //        "Drama",
-        //        "Comedy",
-        //        "Horror",
-        //        "Romance",
-        //        "Sci-fi",
-        //        "Adventure"
-        //        });
-
-        //    ViewBag.Categories = categories;
-        //  }
     }
 }
