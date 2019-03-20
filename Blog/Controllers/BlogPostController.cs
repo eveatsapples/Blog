@@ -247,24 +247,24 @@ namespace Blog.Controllers
 
         public static string Slugify(string str)
         {
-          BlogPostController bpc = new BlogPostController();  
-          str = str.ToLower();
-          str = Regex.Replace(str, @"[^a-z0-9\s, %*]", "");
-          str = Regex.Replace(str, @"\s+", " ").Trim();
-          str = Regex.Replace(str, @"\s", "-");
-          string result = str;
-          if (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
-          {
-            int i = 1;
-            str = str + "-";
-            while (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
+            BlogPostController bpc = new BlogPostController();
+            str = str.ToLower();
+            str = Regex.Replace(str, @"[^a-z0-9\s, %*]", "");
+            str = Regex.Replace(str, @"\s+", " ").Trim();
+            str = Regex.Replace(str, @"\s", "-");
+            string result = str;
+            if (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
             {
-              string numStr = i.ToString();
-              result = str + numStr;
-              i++;
+                int i = 1;
+                str = str + "-";
+                while (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
+                {
+                    string numStr = i.ToString();
+                    result = str + numStr;
+                    i++;
+                }
             }
-          }
-          return result;
+            return result;
         }
 
     }

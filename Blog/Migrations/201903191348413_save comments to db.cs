@@ -2,7 +2,7 @@ namespace Blog.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
-    
+
     public partial class Savecommentstodb : DbMigration
     {
         public override void Up()
@@ -13,7 +13,7 @@ namespace Blog.Migrations
             AlterColumn("dbo.Comments", "UserID", c => c.String(maxLength: 128));
             CreateIndex("dbo.Comments", "UserID");
         }
-        
+
         public override void Down()
         {
             DropIndex("dbo.Comments", new[] { "UserID" });

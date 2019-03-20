@@ -14,30 +14,30 @@ namespace Blog.Controllers
     [RoutePrefix("blog")]
     public class CommentController : Controller
     {
-       private ApplicationDbContext DbContext;
-       public CommentController()
-       {
-           DbContext = new ApplicationDbContext();
-       }
+        private ApplicationDbContext DbContext;
+        public CommentController()
+        {
+            DbContext = new ApplicationDbContext();
+        }
 
-       public ActionResult Create(int postID)
-       {
+        public ActionResult Create(int postID)
+        {
             Comment comment = new Comment();
-            comment.PostID = postID; // this will be sent from the ArticleDetails View, hold on :).
-            return PartialView(comment);            
-       }
-        
-       [HttpPost]
-       [Authorize]
-       public ActionResult Create(Comment comment)
-       {
-         return SaveComment(comment);
-       }
+            comment.PostID = postID; 
+            return PartialView(comment);
+        }
 
-       [HttpGet]
-       [Authorize(Roles = "Admin, Moderator")]
-       public ActionResult Edit(int? id)
-       {
+        [HttpPost]
+        [Authorize]
+        public ActionResult Create(Comment comment)
+        {
+            return SaveComment(comment);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin, Moderator")]
+        public ActionResult Edit(int? id)
+        {
             if (!id.HasValue)
             {
                 return RedirectToAction(nameof(BlogPostController.Index));
@@ -55,14 +55,14 @@ namespace Blog.Controllers
 
             DbContext.SaveChanges();
             return View(comment);
-       }
- 
-       [HttpPost]
-       [Authorize(Roles = "Admin, Moderator")]
-       public ActionResult Edit(Comment comment)
-       {
-         return SaveComment(comment);
-       }
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, Moderator")]
+        public ActionResult Edit(Comment comment)
+        {
+            return SaveComment(comment);
+        }
 
         [HttpPost]
         [Authorize(Roles = "Admin, Moderator")]
@@ -70,7 +70,6 @@ namespace Blog.Controllers
         {
             if (!id.HasValue)
             {
-                //return RedirectToAction(nameof(BlogPostController.Index));
                 return RedirectToAction("FullArticle", "Blog");
             }
 
@@ -124,32 +123,30 @@ namespace Blog.Controllers
             }
 
             DbContext.SaveChanges();
-            
+
             var currentPost = DbContext.BlogPosts.FirstOrDefault(
                 p => p.ID == comment.PostID);
 
-            //return RedirectToAction("FullArticle", "Blog");
             return RedirectToAction("FullArticleBySlug", "BlogPost", new { slug = currentPost.Slug });
-            //return View();
         }
 
-         public ActionResult Show(int postID)
-         {
-              var model = DbContext.Comments.ToList()
-                .Where(p => p.PostID == postID)
-                .Select(p => new ShowCommentViewModel
-                {
-                    Body = p.Body,
-                    ID = p.ID,
-                    UserID = p.UserID,
-                    Date_created = p.Date_created.ToString(),
-                    Date_updated = p.Date_updated.ToString(),
-                    Updated_reason = p.Updated_reason,
-                    PostID = p.PostID
-                }).ToList();
+        public ActionResult Show(int postID)
+        {
+            var model = DbContext.Comments.ToList()
+              .Where(p => p.PostID == postID)
+              .Select(p => new ShowCommentViewModel
+              {
+                  Body = p.Body,
+                  ID = p.ID,
+                  UserID = p.UserID,
+                  Date_created = p.Date_created.ToString(),
+                  Date_updated = p.Date_updated.ToString(),
+                  Updated_reason = p.Updated_reason,
+                  PostID = p.PostID
+              }).ToList();
 
-              return PartialView(model);            
-         }
+            return PartialView(model);
+        }
 
     }
 }

@@ -97,7 +97,7 @@ namespace Blog.Migrations
             }
 
 
-            
+
         }
 
     }

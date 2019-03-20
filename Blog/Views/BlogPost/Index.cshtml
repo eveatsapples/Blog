@@ -21,7 +21,7 @@
                     {
                         <ul class="nav navbar-nav search-bar">
                             <li>@Html.TextBox("query", ViewBag.CurrentFilter as string, new { @class = "search-text-box" })</li>
-                            <li><button class="btn btn-primary"type="submit" value="Search">Search</button></li>
+                            <li><button class="btn btn-primary" type="submit" value="Search">Search</button></li>
                         </ul>
                     }
                     @if (User.IsInRole("Admin"))

@@ -7,18 +7,18 @@
  * Version: 5.0.2 (2019-03-05)
  */
 (function () {
-var colorpicker = (function () {
-    'use strict';
+    var colorpicker = (function () {
+        'use strict';
 
-    var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
+        var global = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
-    global.add('colorpicker', function () {
-      console.warn('Color picker plugin is now built in to the core editor, please remove it from your editor configuration');
-    });
-    function Plugin () {
-    }
+        global.add('colorpicker', function () {
+            console.warn('Color picker plugin is now built in to the core editor, please remove it from your editor configuration');
+        });
+        function Plugin() {
+        }
 
-    return Plugin;
+        return Plugin;
 
-}());
+    }());
 })();
