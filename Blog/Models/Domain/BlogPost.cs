@@ -7,7 +7,8 @@ namespace Blog.Models.Domain
 {
     public class BlogPost
     {
-        public int Id { get; set; }
+        public string Slug { get; set; }
+        public int ID { get; set; }
 
         public virtual ApplicationUser User { get; set; }
         public string UserId { get; set; }

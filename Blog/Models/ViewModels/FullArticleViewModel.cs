@@ -2,11 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using Blog.Models.Domain;
 
 namespace Blog.Models.ViewModels
 {
     public class FullArticleViewModel
     {
+        public int ID { get; set; }
+
+        public string Slug { get; set; }
+
         public string User { get; set; }
 
         public string Title { get; set; }
@@ -20,5 +25,7 @@ namespace Blog.Models.ViewModels
         public string Date_created { get; set; }
 
         public string Date_updated { get; set; }
+
+        public Comment _Comment { get; set; }
     }
 }

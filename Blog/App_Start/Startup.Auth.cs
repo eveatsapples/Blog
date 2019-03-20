@@ -4,6 +4,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
+using Owin.Security.Providers.GitHub;
 using Owin;
 using Blog.Models;
 
@@ -58,11 +59,13 @@ namespace Blog
             //   appId: "",
             //   appSecret: "");
 
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
+            {
+                ClientId = "327402090423-hhg3h4qjnv6iidso9dt53a1l4vfql4p1.apps.googleusercontent.com",
+                ClientSecret = "66RROQHEdGsh2b0oXp3X8cwv"
+            });
+
+            app.UseGitHubAuthentication("5eb1faa0e35566e71cdf", "bcc53557c83cb6e9f116da03bad058c05dc2c36a");
         }
     }
 }

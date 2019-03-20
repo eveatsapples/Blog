@@ -15,7 +15,7 @@ namespace Blog.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "Blog.Models.ApplicationDbContext";
         }
 
@@ -45,9 +45,11 @@ namespace Blog.Migrations
             if (!context.Users.Any(
                 p => p.UserName == "admin@blog.com"))
             {
-                adminUser = new ApplicationUser();
-                adminUser.UserName = "admin@blog.com";
-                adminUser.Email = "admin@blog.com";
+                adminUser = new ApplicationUser
+                {
+                    UserName = "admin@blog.com",
+                    Email = "admin@blog.com"
+                };
 
                 userManager.Create(adminUser, "Password-1");
             }
@@ -74,9 +76,11 @@ namespace Blog.Migrations
             if (!context.Users.Any(
                 p => p.UserName == "moderator@blog.com"))
             {
-                moderatorUser = new ApplicationUser();
-                moderatorUser.UserName = "moderator@blog.com";
-                moderatorUser.Email = "moderator@blog.com";
+                moderatorUser = new ApplicationUser
+                {
+                    UserName = "moderator@blog.com",
+                    Email = "moderator@blog.com"
+                };
 
                 userManager.Create(moderatorUser, "Password-1");
             }
@@ -93,6 +97,7 @@ namespace Blog.Migrations
             }
 
 
+            
         }
 
     }

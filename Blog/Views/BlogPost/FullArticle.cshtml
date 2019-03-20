@@ -6,36 +6,40 @@
 @if (Model.MediaUrl != null)
 {
 <div class="row">
-    <div class="col-md-2">
-        <img class="img-responsive" src="@Url.Content(Model.MediaUrl)" />
-    </div>
+  <div class="col-md-2">
+    <img class="img-responsive" src="@Url.Content(Model.MediaUrl)" />
+  </div>
 </div>
 }
 
 <!-- section -->
 <div class="section">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <!-- Post content -->
-            <div class="col-md-8">
-                <div class="section-row sticky-container">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="section-title">
-                                <h3>@Model.Title</h3>
-                            </div>
+  <!-- container -->
+  <div class="container">
+    <!-- row -->
+    <div class="row">
+      <!-- Post content -->
+        <div class="col-md-8">
+            <div class="section-row sticky-container">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="section-title">
+                            <h3>@Model.Title</h3>
                         </div>
                     </div>
-                    <div class="main-post">
-                        <p>@Html.Raw(Model.Body)</p>
-                    </div>
+                </div>
+                <div class="main-post">
+                    <p>@Html.Raw(Model.Body)</p>
                 </div>
             </div>
+            @Html.Action("Show", "Comment", new { postID = Model.ID })
+
+            @Html.Action("Create", "Comment", new { postID = Model.ID })
         </div>
-        <!-- /row -->
+      <!-- /Post content -->
     </div>
-    <!-- /container -->
+    <!-- /row -->
+  </div>
+  <!-- /container -->
 </div>
 <!-- /section -->

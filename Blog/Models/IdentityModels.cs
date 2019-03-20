@@ -43,5 +43,8 @@ namespace Blog.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<Blog.Models.Domain.Comment> Comments { get; set; }
+
     }
 }

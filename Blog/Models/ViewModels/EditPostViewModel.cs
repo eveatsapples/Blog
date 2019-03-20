@@ -18,5 +18,7 @@ namespace Blog.Models.ViewModels
         public string Body { get; set; }
 
         public HttpPostedFileBase Media { get; set; }
+
+        public bool Published { get; set; }
     }
 }

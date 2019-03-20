@@ -1,0 +1,64 @@
+﻿@model IEnumerable<Blog.Models.ViewModels.ShowCommentViewModel>
+
+@*@Html.DisplayNameFor(model => model.UserID)
+    @Html.DisplayNameFor(model => model.PostID)
+    @Html.DisplayNameFor(model => model.Body)
+    @Html.DisplayNameFor(model => model.Date_created)
+    @Html.DisplayNameFor(model => model.Date_updated)
+    @Html.DisplayNameFor(model => model.Updated_reason)*@
+<div class="section-row">
+    <div class="section-title">
+        <h3>Comments</h3>
+    </div>
+
+    @foreach (var item in Model)
+    {
+        <!-- comments -->
+        <div class="post-comments">
+            <!-- comment -->
+            <div class="media">
+                <div class="media-left">
+                    <img class="media-object" src="~/img/avatar.png" alt="">
+                </div>
+                <div class="media-body">
+                    <div class="media-heading">
+                        <h4>@Html.DisplayFor(modelItem => item.UserID)</h4>
+                        <span class="time">
+                            @Html.DisplayFor(modelItem => item.Date_created)
+                        </span>
+                        @if (item.Date_updated != "")
+                        {
+                            <br />
+                            <span class="time">
+                                Updated: @Html.DisplayFor(modelItem => item.Date_updated)
+                            </span>
+                        }
+                    </div>
+                    <p>@Html.DisplayFor(modelItem => item.Body)</p>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+                    {
+                        if (item.Updated_reason != null)
+                        {
+                            <hr />
+                            <span><strong>updated reason: </strong>@Html.DisplayFor(modelItem => item.Updated_reason)</span>
+                            <hr />
+                        }
+                    }
+                </div>
+            </div>
+            <!-- /comment -->
+        </div>
+        <!-- /comments -->
+        if (User.IsInRole("Admin") || User.IsInRole("Moderator"))
+        {
+            <form method="get" action="@Url.Action("Edit", "Comment", new { id = item.ID })" class="edit-delete-btns-forms">
+                <button class="btn btn-primary admin-btns" type="submit">Edit</button>
+            </form>
+            <form method="post" action="@Url.Action("Delete", "Comment", new { id = item.ID })" class="edit-delete-btns-forms">
+                <button class="btn btn-primary" type="submit">Delete</button>
+            </form>
+            <hr />
+            <hr />
+        }
+    }
+</div>

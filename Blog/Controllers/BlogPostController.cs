@@ -8,11 +8,11 @@ using Blog.Models;
 using Blog.Models.Domain;
 using Blog.Models.ViewModels;
 using System.IO;
-
-
+using System.Text.RegularExpressions;
 
 namespace Blog.Controllers
 {
+    [RoutePrefix("blog")]
     public class BlogPostController : Controller
     {
         private ApplicationDbContext DbContext;
@@ -22,17 +22,20 @@ namespace Blog.Controllers
             DbContext = new ApplicationDbContext();
         }
 
+        [Route]
         public ActionResult Index()
         {
             var model = DbContext.BlogPosts
               .Select(p => new IndexBlogPostViewModel
               {
-                  Id = p.Id,
+                  Slug = p.Slug,
+                  ID = p.ID,
                   Title = p.Title,
                   Body = p.Body,
                   Date_created = p.Date_created.ToString(),
                   Date_updated = p.Date_updated.ToString(),
-                  MediaUrl = p.MediaUrl
+                  MediaUrl = p.MediaUrl,
+                  Published = p.Published
               }).ToList();
 
             return View(model);
@@ -63,9 +66,8 @@ namespace Blog.Controllers
 
             var userId = User.Identity.GetUserId();
 
-            if (DbContext.BlogPosts.Any(p => p.UserId == userId &&
-                  p.Title == formData.Title &&
-                  (!id.HasValue || p.Id != id.Value)))
+            if (DbContext.BlogPosts.Any(p => p.Title == formData.Title &&
+                  (!id.HasValue || p.ID != id.Value)))
             {
                 ModelState.AddModelError(nameof(EditPostViewModel.Title),
                     "Article title should be unique");
@@ -89,25 +91,29 @@ namespace Blog.Controllers
 
             if (!id.HasValue)
             {
-                post = new BlogPost();
-                post.UserId = userId;
+                post = new BlogPost
+                {
+                    UserId = userId
+                };
                 DbContext.BlogPosts.Add(post);
+                post.Slug = Slugify(formData.Title);
+                post.Date_created = DateTime.Now;
             }
             else
             {
                 post = DbContext.BlogPosts.FirstOrDefault(
-                    p => p.Id == id);
+                    p => p.ID == id);
 
                 if (post == null)
                 {
                     return RedirectToAction(nameof(BlogPostController.Index));
                 }
+                post.Date_updated = DateTime.Now;
             }
 
             post.Title = formData.Title;
             post.Body = formData.Body;
-            post.Date_created = DateTime.Now;
-            post.Published = true;
+            post.Published = formData.Published;
 
             if (formData.Media != null)
             {
@@ -142,18 +148,20 @@ namespace Blog.Controllers
             var userId = User.Identity.GetUserId();
 
             var post = DbContext.BlogPosts.FirstOrDefault(
-                p => p.Id == id && p.UserId == userId);
+                p => p.ID == id && p.UserId == userId);
 
             if (post == null)
             {
                 return RedirectToAction(nameof(BlogPostController.Index));
             }
 
-            var model = new EditPostViewModel();
-            model.Title = post.Title;
-            model.Body = post.Body;
+            var model = new EditPostViewModel
+            {
+                Title = post.Title,
+                Body = post.Body
+            };
             post.Date_updated = DateTime.Now;
-            post.Published = true;
+            post.Published = post.Published;
 
             DbContext.SaveChanges();
             return View(model);
@@ -175,7 +183,7 @@ namespace Blog.Controllers
                 return RedirectToAction(nameof(BlogPostController.Index));
             }
 
-            var post = DbContext.BlogPosts.FirstOrDefault(p => p.Id == id);
+            var post = DbContext.BlogPosts.FirstOrDefault(p => p.ID == id);
 
             if (post != null)
             {
@@ -187,25 +195,77 @@ namespace Blog.Controllers
         }
 
         [HttpGet]
-        public ActionResult FullArticle(int? id)
+        [Route("{slug}")]
+        public ActionResult FullArticleBySlug(string slug)
         {
-            if (!id.HasValue)
+            if (string.IsNullOrWhiteSpace(slug))
+            {
                 return RedirectToAction(nameof(BlogPostController.Index));
+            }
 
             var userId = User.Identity.GetUserId();
 
             var post = DbContext.BlogPosts.FirstOrDefault(p =>
-                p.Id == id.Value);
+            p.Slug.ToString() == slug);
 
             if (post == null)
+            {
                 return RedirectToAction(nameof(BlogPostController.Index));
+            }
 
-            var model = new FullArticleViewModel();
-            model.Title = post.Title;
-            model.Body = post.Body;
-            model.MediaUrl = post.MediaUrl;
+            var model = new FullArticleViewModel
+            {
+                ID = post.ID,
+                Title = post.Title,
+                Body = post.Body,
+                MediaUrl = post.MediaUrl
+            };
 
-            return View(model);
+            return View("FullArticle", model);
         }
+
+        [HttpGet]
+        [Route("Search")]
+        public ActionResult Search(string query)
+        {
+            var model = DbContext.BlogPosts
+              .Where(p => p.Title.Contains(query) || p.Slug.Contains(query) || p.Body.Contains(query))
+              .Select(p => new IndexBlogPostViewModel
+              {
+                  Slug = p.Slug,
+                  ID = p.ID,
+                  Title = p.Title,
+                  Body = p.Body,
+                  Date_created = p.Date_created.ToString(),
+                  Date_updated = p.Date_updated.ToString(),
+                  MediaUrl = p.MediaUrl,
+                  Published = p.Published
+              }).ToList();
+
+            return View("index", model);
+        }
+
+        public static string Slugify(string str)
+        {
+          BlogPostController bpc = new BlogPostController();  
+          str = str.ToLower();
+          str = Regex.Replace(str, @"[^a-z0-9\s, %*]", "");
+          str = Regex.Replace(str, @"\s+", " ").Trim();
+          str = Regex.Replace(str, @"\s", "-");
+          string result = str;
+          if (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
+          {
+            int i = 1;
+            str = str + "-";
+            while (bpc.DbContext.BlogPosts.Any(p => p.Slug == result))
+            {
+              string numStr = i.ToString();
+              result = str + numStr;
+              i++;
+            }
+          }
+          return result;
+        }
+
     }
 }
